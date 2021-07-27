@@ -1,4 +1,4 @@
-# import required libraries
+# import the required libraries
 import os
 import math
 import numpy as np
