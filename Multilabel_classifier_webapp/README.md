@@ -1,6 +1,6 @@
 # MULTI-LABEL INTENT CLASSIFIER PROJECT
-A multi-label intent classifier built using **XLNet**.
-## MAY'21-JULY 21
+The multi-label intent classifier model is built using **XLNet** and the app is created using **Streamlit**.  
+MAY'21-JULY 21
 
 Overview
 A Multi-label intent classifier Project which predicts the sentiment and multiple intents of
