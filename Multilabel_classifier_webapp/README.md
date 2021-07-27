@@ -1,4 +1,5 @@
 # MULTI-LABEL INTENT CLASSIFIER PROJECT
+A multi-label intent classifier built using **XLNet**.
 ## MAY'21-JULY 21
 
 Overview
