@@ -2,6 +2,14 @@
 The multi-label intent classifier model is built using **XLNet** and the app is created using **Streamlit**.  
 MAY'21-JULY 21
 
+# Codes
+- Building the classifier model: https://github.com/rishikavaish/Projects-ML/blob/7ea935e90c8d6c5885f7025258fe59d2ec32add8/Multilabel_classifier_webapp/multilabel_classifier_app.py
+- Applying the classifier model to create multi-label intent classifier web app using streamlit: 
+
+# Files required
+- Clusterd Data CSV: https://drive.google.com/file/d/1I_QKBMTsEWMYmLmMD6chu1g9XDL0uSLH/view?usp=sharing  
+- Trained model: https://drive.google.com/file/d/1Nh6KWiUnjgJk07xIRWxHI21G-17eW5Cr/view?usp=sharing
+
 # Demo
 This is the preview of the app with an example text already tried out.
 
