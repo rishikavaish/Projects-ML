@@ -4,6 +4,7 @@ MAY'21-JULY 21
 
 # Demo
 This is the preview of the app
+![alt text](https://github.com/rishikavaish/Projects-ML/blob/main/Screenshot (2)?raw=true)
 
 Overview
 A Multi-label intent classifier Project which predicts the sentiment and multiple intents of
