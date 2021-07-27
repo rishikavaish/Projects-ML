@@ -1,18 +1,19 @@
+# import required libraries
 import os
 import math
-
+import numpy as np
+import pandas as pd
+from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 import torch
 from torch.nn import BCEWithLogitsLoss
-# from torch.utils.data import tensorDataset, DataLoader, RandomSampler, SequentialSampler
 from transformers import XLNetModel, XLNetLMHeadModel, XLNetConfig
 from transformers import XLNetTokenizerFast
 from tensorflow.keras.preprocessing.sequence import pad_sequences
-import numpy as np
-import pandas as pd
-
 import streamlit as st
 
+#######################################################################################################################
 
+# We import the fixed functions from a pre-trained XLNet model.
 def tokenize_inputs(text_list, tokenizer, num_embeddings=512):
     """
     Tokenizes the input text input into ids. Appends the appropriate special
@@ -96,20 +97,24 @@ class XLNetForMultiLabelSequenceClassification(torch.nn.Module):
         mean_last_hidden_state = torch.mean(last_hidden_state, 1)
         return mean_last_hidden_state
 
+#######################################################################################################################
 
+# define the tokenizer
 tokenizer = XLNetTokenizerFast.from_pretrained('xlnet-base-cased', do_lower_case=True)
 
+# deine labels and num_label
 label_cols = ['Problem in recharge', 'Problem in reward/redeem points',
               'Problem in registration/login/username/password', 'Problem with customer care service',
               'Other complaints', 'Bad/Irrelevant comments', 'Appreciation']
 num_labels = len(label_cols)
 
-model_save_path = 'classifier_model1 (1).pt'
+# download the trained model directly, given in the repository and write the model_save_path accordingly.
+model_save_path = 'trained_model.pt'
 device = torch.device('cpu')
 model = XLNetForMultiLabelSequenceClassification(num_labels)
 model.load_state_dict(torch.load(model_save_path, map_location=device))
 
-
+# create a function for generating the predictions along with the probabilities of each label
 def generate_predictions(model, df, num_labels, device="cpu", batch_size=32):
     num_iter = math.ceil(df.shape[0] / batch_size)
 
@@ -133,10 +138,9 @@ def generate_predictions(model, df, num_labels, device="cpu", batch_size=32):
 
     return pred_probs
 
+##################################################################################################################################
 
-from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
-
-analyzer = SentimentIntensityAnalyzer()
+# building the structure of the application:
 
 # heading
 html_temp = """
@@ -144,7 +148,7 @@ html_temp = """
 """
 st.markdown(html_temp, unsafe_allow_html=True)
 
-# labels
+# this part is to display all the labels as shown in the preview of the app in the repository
 st.header("Labels to be predicted:")
 c1, c2, c3, c4 = st.beta_columns([0.5, 0.5, 0.5, 0.5])
 c1.button("Problem in recharge")
@@ -162,12 +166,14 @@ with c6:
 with c7:
     st.button("Bad/Irrelevant comments")
 
-# input text
+# taking input text from the user
 comment = st.text_input("Enter your text ")
 
-# sentiments and intents
+# calculating sentiments and intents
+analyzer = SentimentIntensityAnalyzer() #define the analyzer
 if st.button("Get results"):
     st.header("Classification results")
+    # first generate sentiment
     st.success("Generating sentiment..")
     vs = analyzer.polarity_scores(comment)
     p = abs(vs['compound']) * 100
@@ -179,6 +185,7 @@ if st.button("Get results"):
     else:
         st.subheader('The sentiment of your text is neutral')
     st.text("")
+    # secondly, generate multiple intents
     st.success("Generating intents with there probabilities...")
     data = [[comment]]
     df1 = pd.DataFrame(data, columns=['content'])
@@ -191,6 +198,8 @@ if st.button("Get results"):
     pred_probs = pred_probs * 100
     pred_probs = np.round(pred_probs, 2)
     probsList = [item for elem in pred_probs for item in elem]
+    # set a threshold below which the particular intent will not be shown.
+    # and if the text does not belong to any category it will show "Your text does not belong to any category!"
     THRESHOLD = 50
     st.header("Your text is classified as")
     if probsList[0] < THRESHOLD and probsList[1] < THRESHOLD and probsList[2] < THRESHOLD and probsList[3] < THRESHOLD and probsList[4] < THRESHOLD and probsList[5] < THRESHOLD and probsList[6] < THRESHOLD:
@@ -201,6 +210,7 @@ if st.button("Get results"):
                 continue
             st.subheader(f"{prediction}%  {label}")
 
+# contents in the sidebar
 st.sidebar.header("About App")
 st.sidebar.info(
     "A Multi-label intent classification Project which will predict the sentiment and multiple intents of the given text and also predicts the probability of each label.")
