@@ -25,6 +25,13 @@ https://github.com/rishikavaish/Projects-ML/blob/7ea935e90c8d6c5885f7025258fe59d
 - Clusterd Data CSV: https://drive.google.com/file/d/1I_QKBMTsEWMYmLmMD6chu1g9XDL0uSLH/view?usp=sharing  
 - Trained model: https://drive.google.com/file/d/1Nh6KWiUnjgJk07xIRWxHI21G-17eW5Cr/view?usp=sharing
 
+# Installation
+The Code is written in Python 3.7. If you are using a lower version of Python you can upgrade using the pip package, ensuring you have the latest version of pip. To install the required packages and libraries, run this command in the project directory after cloning the repository:
+
+```
+pip install -r requirements.txt
+```
+
 # Steps
 - Build the Classifier model using NLP
   - Scrape reviews from a google playstore app
@@ -33,13 +40,6 @@ https://github.com/rishikavaish/Projects-ML/blob/7ea935e90c8d6c5885f7025258fe59d
   - Fine tune a pretrained XLNet model
   - Generate Predictions
 - Applying the classifier model to create a multilabel intent classifier app using Streamlit
-
-# Installation
-The Code is written in Python 3.7. If you are using a lower version of Python you can upgrade using the pip package, ensuring you have the latest version of pip. To install the required packages and libraries, run this command in the project directory after cloning the repository:
-
-'''
-pip install -r requirements.txt
-'''
 
 # Summary
 
@@ -52,9 +52,9 @@ reviews into positive, negative and neutral along with the percentage of positiv
    - Shift in polarity due to but (e.g. I liked the app, but the speed was slow.)
 - Now to get to know more about the problems that the users are facing, the next step is the intent analysis, i.e. to classify the text into different categories, something other than the basic positive, negative and neutral classification.
 - For intent classification, first text clustering was done using tf-idf and then k-means clustering was applied on it to form the clusters. Then, there is a n-grams technique which is used to clean the clusters. In this n-grams technique, you have to make n-grams for each cluster and pick only those words which belong to that particular category, basically, the words which are more frequent in that cluster. So, this was how the final clusters were formed. The following seven categories were formed after clustering.
-'''
+```
 label_cols = ['Problem in recharge','Problem in reward/redeem points','Problem in registration/login/username/password','Problem with customer care service','Other complaints','Bad/Irrelevant comments','Appreciation']
-'''
+```
 - After clustering, results were formed into a dataset and after doing some data wrangling, a final clustered dataset was formed where each review could have multiple labels. Below is the csv file for the complete clustered data which will be used afterwards and in this you can also see the format in which you have to feed the data to the classifier model:
    - https://drive.google.com/file/d/1I_QKBMTsEWMYmLmMD6chu1g9XDL0uSLH/view?usp=sharing
 - So now comes the part to build a classifier model which will predict the category of a new review or a new set of reviews given to it. A pretrained XLNet model has been used for building the classifier and then this pretrained XLNet model was fine tuned by training it on our type of data. And, after preprocessing the data and training the model on this data, a function was formed for getting predictions for a new data along with the probabilities of each label.
