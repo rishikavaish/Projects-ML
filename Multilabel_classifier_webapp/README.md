@@ -17,6 +17,8 @@ This is the preview of the app with an example text already tried out.
 
 ![alt text](demo1.png?raw=true)
 
+You can check the other demo images of the app given in the repository.
+
 # Overview
 A Multi-label intent classifier Project which predicts the sentiment and multiple intents of
 the review of a google play store app along with the percentage of positivity/negativity and also the percentage of
