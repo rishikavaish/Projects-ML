@@ -109,7 +109,7 @@ label_cols = ['Problem in recharge', 'Problem in reward/redeem points',
 num_labels = len(label_cols)
 
 # download the trained model directly, given in the repository and write the model_save_path accordingly.
-model_save_path = 'trained_model.pt'
+model_save_path = 'classifier_model1.pt'
 device = torch.device('cpu')
 model = XLNetForMultiLabelSequenceClassification(num_labels)
 model.load_state_dict(torch.load(model_save_path, map_location=device))
