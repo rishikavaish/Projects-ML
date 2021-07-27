@@ -19,7 +19,7 @@ each label.
   - Text clustering
   - Fine tune a pretrained XLNet model
   - Generate Predictions
-- Create a multilabel intent classifier app using Streamlit
+- Applying the classifier model to create a multilabel intent classifier app using Streamlit
 
 # Summary
 
