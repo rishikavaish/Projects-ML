@@ -3,7 +3,7 @@ The multi-label intent classifier model is built using **XLNet** and the app is 
 MAY'21-JULY 21
 
 # Demo
-This is the preview of the app 
+This is the preview of the app with an example text already tried out.
 
 ![alt text](demo1.png?raw=true)
 
