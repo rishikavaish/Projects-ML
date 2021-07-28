@@ -1,17 +1,17 @@
+# import required libraries
 import warnings
-
 warnings.filterwarnings("ignore")
+
 from textblob import Word
 import nltk
-
 nltk.download('wordnet')
 nltk.download('punkt')
 nltk.download('stopwords')
 from wordcloud import WordCloud, STOPWORDS
-import streamlit as st
 from google_play_scraper import Sort, reviews
 from datetime import datetime
 from datetime import timedelta
+import streamlit as st
 
 # To Hide Warnings
 st.set_option('deprecation.showfileUploaderEncoding', False)
@@ -20,7 +20,6 @@ import os
 import math
 import torch
 from torch.nn import BCEWithLogitsLoss
-# from torch.utils.data import TensorDataset, DataLoader, RandomSampler, SequentialSampler
 from transformers import AdamW, XLNetTokenizer, XLNetModel, XLNetLMHeadModel, XLNetConfig
 from transformers import XLNetTokenizerFast
 from tensorflow.keras.preprocessing.sequence import pad_sequences
@@ -28,11 +27,11 @@ from sklearn.model_selection import train_test_split
 import numpy as np
 import pandas as pd
 from tqdm import tqdm, trange
+
 # Viz Pkgs
 import matplotlib
 import seaborn as sns
 import matplotlib.pyplot as plt
-
 matplotlib.use('Agg')
 sns.set_style('darkgrid')
 STYLE = """
@@ -42,6 +41,7 @@ img {
 }
 </style> """
 
+# contents in the sidebar
 st.sidebar.header("About App")
 st.sidebar.info("A SBI Rewardz App reviews analysis Project which will scrape reviews for the past 7 days. The extracted reviews will then be used to determine the Sentiments and Intents of those reviews. \
                     The different Visualizations will help us get a feel of the overall mood of the users regarding the App.")
@@ -50,13 +50,16 @@ st.sidebar.text("Built with Streamlit")
 st.sidebar.header("For Any Queries/Suggestions Please reach out at :")
 st.sidebar.info("rishikavaish321@gmail.com")
 
+# # building the structure of the application:
+
+#heading
 html_temp = """
 <div style="background-color:tomato;"><p style="color:white;font-size:40px;padding:9px">Live SBI Rewardz App Reviews Analysis</p></div>
 """
 st.markdown(html_temp, unsafe_allow_html=True)
 st.subheader("Results for past 7 days")
 
-# Write a code to extract reviews for past 1 week
+# code to extract reviews for past 1 week from a google play store app using google-play-scraper
 result, continuation_token = reviews(
     'com.freedomrewardz',  # found in app's url
     lang='en',  # defaults to 'en'
@@ -102,8 +105,6 @@ st.subheader(" Count Plot for Different Scores")
 st.write(sns.countplot(df["score"]))
 st.pyplot()
 
-
-
 # Function for getting the sentiment
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
@@ -115,6 +116,7 @@ for row in df['content']:
 
 # Creating new dataframe with sentiments
 df_sentiments = pd.DataFrame(sentiment_comp)
+
 # Merging the sentiments back to reviews dataframe
 df = pd.concat([df.reset_index(drop=True), df_sentiments], axis=1)
 percentage_comp = []
@@ -127,9 +129,9 @@ for i in df['compound']:
     else:
         percentage = " "
     percentage_comp.append(percentage)
-
 df['percentage'] = percentage_comp
-# Convert scores into positive, negative and not defined sentiments using some threshold
+
+# Convert scores into positive, negative and not defined sentiments using some threshold with VADER sentiment
 df["Sentiment"] = df["compound"].apply(lambda compound: "positive" if compound > 0 else \
     ("negative" if compound < 0 else "not defined"))
 df.drop(['neg', 'neu', 'pos', 'compound'], axis='columns', inplace=True)
@@ -148,7 +150,7 @@ if len(selected_cols) > -1:
 
 # get the countPlot
 st.subheader("How many Positive, Negative and Neutral reviews?")
-# st.success("Generating A Count Plot")
+st.success("Generating A Count Plot")
 st.subheader(" Count Plot for Different Sentiments")
 st.write(sns.countplot(df["Sentiment"]))
 st.pyplot()
@@ -160,7 +162,6 @@ reviews = np.array(df['content'])
 size = (len(df))
 
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
-
 analyzer = SentimentIntensityAnalyzer()
 pos_reviews = ''
 neg_reviews = ''
@@ -200,7 +201,9 @@ st.subheader("Word cloud for Positive reviews")
 st.success("Generating A Positive WordCloud")
 generate_wordcloud(pos_reviews)
 
+# intent analysis
 
+# import required functions from a pretrained xlnet model
 def tokenize_inputs(text_list, tokenizer, num_embeddings=512):
     """
     Tokenizes the input text input into ids. Appends the appropriate special
@@ -284,20 +287,22 @@ class XLNetForMultiLabelSequenceClassification(torch.nn.Module):
         mean_last_hidden_state = torch.mean(last_hidden_state, 1)
         return mean_last_hidden_state
 
-
+# deine a tokenizer
 tokenizer = XLNetTokenizerFast.from_pretrained('xlnet-base-cased', do_lower_case=True)
 
+# deine labels and num_label
 label_cols = ['Problem in recharge', 'Problem in reward/redeem points',
               'Problem in registration/login/username/password', 'Problem with customer care service',
               'Other complaints', 'Bad/Irrelevant comments', 'Appreciation']
 num_labels = len(label_cols)
 
-model_save_path = 'classifier_model1 (1).pt'
+# download the trained model directly, given in the repository and write the model_save_path accordingly.
+model_save_path = 'classifier_model1.pt'
 device = torch.device('cpu')
 model = XLNetForMultiLabelSequenceClassification(num_labels)
 model.load_state_dict(torch.load(model_save_path, map_location=device))
 
-
+# create a function for generating the predictions along with the probabilities of each label
 def generate_predictions(model, df, num_labels, device="cpu", batch_size=32):
     num_iter = math.ceil(df.shape[0] / batch_size)
 
@@ -321,7 +326,7 @@ def generate_predictions(model, df, num_labels, device="cpu", batch_size=32):
 
     return pred_probs
 
-
+# generate the multiple intents for each review in the last 1 week along with the probabilities and then round off the probabilities to 0 & 1.
 dfx = df[['content']]
 dfx_text_list = dfx["content"].values
 dfx_input_ids = tokenize_inputs(dfx_text_list, tokenizer, num_embeddings=250)
@@ -339,6 +344,7 @@ dfx['Bad/Irrelevant comments'] = pred_probs[:, 5]
 dfx['Appreciation'] = pred_probs[:, 6]
 dfx = dfx.drop(['features', 'masks'], axis=1)
 
+# display results of intent analysis
 st.header("Results of the Intent Analysis")
 # review count for each category
 st.success("Generating review count for each category..")
@@ -348,7 +354,7 @@ bar_plot['count'] = dfx.iloc[:, 1:].sum().values
 bar_plot.sort_values(['count'], inplace=True, ascending=False)
 bar_plot.reset_index(inplace=True, drop=True)
 st.dataframe(bar_plot)
-
+# barplot for the same
 threshold = 200
 plt.figure(figsize=(15, 8))
 sns.set(font_scale=1.5)
@@ -363,6 +369,7 @@ plt.xlabel('Category', fontsize=18)
 plt.xticks(rotation='vertical')
 st.pyplot()
 
+# barplot of reviews with multiple categories
 st.subheader("Reviews with multiple categories")
 st.success("Generating barplot..")
 rowSums = dfx.iloc[:, 1:].sum(axis=1)
@@ -376,6 +383,7 @@ plt.ylabel('Number of reviews', fontsize=18)
 plt.xlabel('Number of categories', fontsize=18)
 st.pyplot()
 
+# count and dataframe of reviews which do not belong to any category
 df1 = dfx[dfx['Problem in recharge'] == 0]
 df1 = df1[df1['Problem in reward/redeem points'] == 0]
 df1 = df1[df1['Problem in registration/login/username/password'] == 0]
