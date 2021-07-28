@@ -1,6 +1,6 @@
 # MULTI-LABEL INTENT CLASSIFIER APP PROJECT
 The multi-label intent classifier model is built using **XLNet** and the app is created using **Streamlit**.  
-MAY'21-JULY 21
+JUNE'21-JULY'21
 
 # Demo
 This is the preview of the app with an example text already tried out.
@@ -10,9 +10,7 @@ This is the preview of the app with an example text already tried out.
 You can check the other demo images of the app given in the repository.
 
 # Overview
-A Multi-label intent classifier Project which predicts the sentiment and multiple intents of
-the review of a google play store app along with the percentage of positivity/negativity and also the percentage of
-each label.
+A Multi-label intent classifier Project which predicts the sentiment and multiple intents of the review of a google play store app along with the percentage of positivity/negativity and also the percentage of each label.
 
 # Technical Aspect
 This project is divided into two parts:
