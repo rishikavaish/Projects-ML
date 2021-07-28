@@ -1,3 +1,6 @@
+# you can directly run this app using the command !streamlit run multilabel_classifier_app.py
+# on your terminal
+
 # import the required libraries
 import os
 import math
