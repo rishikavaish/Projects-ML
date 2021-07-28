@@ -1,3 +1,5 @@
+# you can directly run this app using the command !streamlit run sentiment,intent_analysis_app.py
+
 # import required libraries
 import warnings
 warnings.filterwarnings("ignore")
