@@ -4,6 +4,8 @@
 # Overview
 A web app to automate the sentiment/intent analysis of the reviews of a google play store application which automatically scrapes review data for the last 1 week and gives various sentiment and intent analysis visualization results and useful insights.
 
+For EDA and sentiment Analysis of the reviews dataset: https://github.com/rishikavaish/Projects-ML/blob/fea72391a4a805582e669bf88b71806556fe644a/sentiment,intent_analysis_app/eda_and_sentiment_analysis_reviews.ipynb
+
 # Technical Aspect
 This project is divided into two parts:
 - Building the classifier model:  
