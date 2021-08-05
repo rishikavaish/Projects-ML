@@ -1,4 +1,4 @@
-# Projects-ML
+# Projects-NLP
 This repository contains some projects I did by applying NLP/Machine Learning/Deep learning.
 
 ## MULTI-LABEL INTENT CLASSIFIER APP PROJECT
