@@ -15,7 +15,7 @@ A Multi-label intent classifier Project which predicts the sentiment and multipl
 # Technical Aspect
 This project is divided into two parts:
 - Building the classifier model:  
-https://github.com/rishikavaish/Projects-ML/blob/a1a46a573f6cd9235ba75fe9a83f2c525348536b/Multilabel_classifier_webapp/building_the_classifier_model.ipynb
+https://github.com/rishikavaish/Projects-NLP/blob/main/Multilabel_classifier_webapp/building_classifier_model.ipynb
 - Applying the classifier model to create multi-label intent classifier web app using streamlit:  
 https://github.com/rishikavaish/Projects-ML/blob/7ea935e90c8d6c5885f7025258fe59d2ec32add8/Multilabel_classifier_webapp/multilabel_classifier_app.py
 
