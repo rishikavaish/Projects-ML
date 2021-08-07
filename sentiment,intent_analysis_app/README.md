@@ -9,7 +9,7 @@ For EDA and sentiment Analysis of the reviews dataset: https://github.com/rishik
 # Technical Aspect
 This project is divided into two parts:
 - Building the classifier model:  
-https://github.com/rishikavaish/Projects-ML/blob/a1a46a573f6cd9235ba75fe9a83f2c525348536b/Multilabel_classifier_webapp/building_the_classifier_model.ipynb
+https://github.com/rishikavaish/Projects-NLP/blob/main/Multilabel_classifier_webapp/building_classifier_model.ipynb
 - Applying the classifier model to create sentiment and intent analysis web app using streamlit:  
 https://github.com/rishikavaish/Projects-ML/blob/289413f5b7f6061d75dd27525cb48e37eefeeee2/sentiment,intent_analysis_app/sentiment,intent_analysis_app.py
 
